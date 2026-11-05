@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum Category {
+  SOLAIRE
+  VUE
+  ENFANT
+  LENTILLE
+}
+
+enum Gender {
+  HOMME
+  FEMME
+  MIXTE
+  ENFANT
+}
+
+enum AppointmentType {
+  EXAMEN_VUE
+  ESSAYAGE
+  LENTILLES
+  CONSEIL
+}
+
+enum AppointmentStatus {
+  EN_ATTENTE
+  CONFIRME
+  ANNULE
+  TERMINE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+}
+
+model Brand {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  slug     String    @unique
+  logoUrl  String?
+  products Product[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  category    Category
+  gender      Gender?
+  description String?
+  price       Int?
+  frameShape  String?
+  material    String?
+  color       String?
+  images      String[]
+  inStock     Boolean  @default(true)
+  featured    Boolean  @default(false)
+  brandId     String?
+  brand       Brand?   @relation(fields: [brandId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Appointment {
+  id        String            @id @default(cuid())
+  fullName  String
+  phone     String
+  email     String?
+  type      AppointmentType
+  date      DateTime
+  message   String?
+  status    AppointmentStatus @default(EN_ATTENTE)
+  createdAt DateTime          @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

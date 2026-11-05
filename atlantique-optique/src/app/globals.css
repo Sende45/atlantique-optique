@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #edf8f2;
+  --color-brand-100: #d3efdf;
+  --color-brand-200: #a8dfc0;
+  --color-brand-300: #7ccc9c;
+  --color-brand-500: #2a9d63;
+  --color-brand-600: #228a5b;
+  --color-brand-700: #1b6f49;
+  --color-brand-800: #155a3b;
+  --color-brand-900: #0f402b;
+
+  --color-gold-400: #d4b06a;
+  --color-gold-500: #c49a4a;
+
+  --color-ink: #1f2937;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  color: var(--color-ink);
+  background: #ffffff;
+  /* Empêche tout débordement horizontal sans casser le header sticky */
+  overflow-x: clip;
+}
+
+/* Sur mobile, Safari zoome sur les champs < 16px : on force 16px */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Barre de défilement masquée pour les filtres horizontaux */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
