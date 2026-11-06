@@ -5,7 +5,16 @@ import { useState } from "react";
 import { Loader2, Save } from "lucide-react";
 import ImageUploader from "./ImageUploader";
 
-export default function BoutiqueImagesForm({ initial }: { initial: string[] }) {
+type Props = {
+  initial: string[];
+  /** Zone du site concernée : "boutique" ou "pourquoi". */
+  imageKey?: "boutique" | "pourquoi";
+  /** Une seule photo : un nouvel envoi remplace l'ancienne. */
+  single?: boolean;
+  hint?: string;
+};
+
+export default function BoutiqueImagesForm({ initial, imageKey = "boutique", single = false, hint }: Props) {
   const router = useRouter();
   const [images, setImages] = useState<string[]>(initial);
   const [saving, setSaving] = useState(false);
@@ -20,7 +29,7 @@ export default function BoutiqueImagesForm({ initial }: { initial: string[] }) {
       const res = await fetch("/api/admin/boutique", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images }),
+        body: JSON.stringify({ key: imageKey, images }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Erreur lors de l'enregistrement.");
@@ -39,14 +48,20 @@ export default function BoutiqueImagesForm({ initial }: { initial: string[] }) {
         images={images}
         onChange={(update) => {
           setSaved(false);
-          setImages(update);
+          setImages((prev) => {
+            const next = update(prev);
+            return single ? next.slice(-1) : next;
+          });
         }}
         folder="boutique"
-        hint="JPG, PNG ou WebP, 10 Mo max par photo. S'il y a plusieurs photos, elles défilent sur la page À propos."
+        hint={
+          hint ??
+          "JPG, PNG ou WebP, 10 Mo max par photo. S'il y a plusieurs photos, elles défilent sur la page À propos."
+        }
       />
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {saved && <p className="text-sm text-green-700">Photos enregistrées. La page À propos est à jour.</p>}
+      {saved && <p className="text-sm text-green-700">Photos enregistrées. Le site est à jour.</p>}
 
       <button
         type="button"

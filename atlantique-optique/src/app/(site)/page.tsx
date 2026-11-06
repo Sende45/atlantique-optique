@@ -5,6 +5,8 @@ import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
 import Hero from "@/components/home/Hero";
 import BrandMarquee from "@/components/BrandMarquee";
+import WhyChooseImage from "@/components/home/WhyChooseImage";
+import { getPourquoiImage } from "@/lib/site-images";
 import Reveal from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 
@@ -22,7 +24,11 @@ const categoryImages: Record<string, string> = {
   lentille: siteImages.catLentilles,
 };
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const pourquoiImage = await getPourquoiImage();
+
   return (
     <>
       <Hero />
@@ -134,17 +140,7 @@ export default function HomePage() {
       {/* Pourquoi nous choisir */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid overflow-hidden rounded-2xl lg:grid-cols-[2fr_3fr]">
-          <Reveal x={-40} y={0} className="relative min-h-[220px] overflow-hidden bg-brand-100 sm:min-h-[300px]">
-            {siteImages.boutique && (
-              <Image
-                src={siteImages.boutique}
-                alt="Boutique Atlantique Optique"
-                fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover transition duration-700 hover:scale-105"
-              />
-            )}
-          </Reveal>
+          <WhyChooseImage src={pourquoiImage} />
           <Reveal x={40} y={0} className="bg-brand-900 p-6 text-white sm:p-10">
             <h2 className="text-xl font-bold sm:text-2xl">Pourquoi nous choisir ?</h2>
             <StaggerGroup className="mt-8 grid grid-cols-1 gap-7 sm:grid-cols-2 xl:grid-cols-4" stagger={0.12}>
