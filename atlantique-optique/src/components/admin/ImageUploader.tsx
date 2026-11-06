@@ -9,9 +9,11 @@ const MAX_SIZE = 10 * 1024 * 1024; // 10 Mo
 type Props = {
   images: string[];
   onChange: (update: (prev: string[]) => string[]) => void;
+  folder?: "produits" | "boutique";
+  hint?: string;
 };
 
-export default function ImageUploader({ images, onChange }: Props) {
+export default function ImageUploader({ images, onChange, folder = "produits", hint }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState(0);
   const [error, setError] = useState("");
@@ -36,7 +38,11 @@ export default function ImageUploader({ images, onChange }: Props) {
     setPending(valid.length);
 
     try {
-      const signRes = await fetch("/api/admin/cloudinary-sign", { method: "POST" });
+      const signRes = await fetch("/api/admin/cloudinary-sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder }),
+      });
       const sign = await signRes.json();
       if (!signRes.ok) throw new Error(sign.error || "Autorisation d'upload refusée.");
 
@@ -132,7 +138,7 @@ export default function ImageUploader({ images, onChange }: Props) {
 
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       <p className="mt-2 text-xs text-gray-500">
-        JPG, PNG ou WebP, 10 Mo max par photo. La première photo est l&apos;image principale du produit.
+        {hint ?? "JPG, PNG ou WebP, 10 Mo max par photo. La première photo est l'image principale du produit."}
       </p>
     </div>
   );

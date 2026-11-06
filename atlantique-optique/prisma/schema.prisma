@@ -98,3 +98,9 @@ model ContactMessage {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model SiteImages {
+  key       String   @id
+  images    String[]
+  updatedAt DateTime @updatedAt
+}

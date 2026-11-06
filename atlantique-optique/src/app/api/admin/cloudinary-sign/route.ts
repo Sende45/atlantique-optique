@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 
-export async function POST() {
+export async function POST(req: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
 
@@ -15,7 +15,8 @@ export async function POST() {
   }
 
   const timestamp = Math.round(Date.now() / 1000);
-  const folder = "atlantique-optique/produits";
+  const body = await req.json().catch(() => null);
+  const folder = body?.folder === "boutique" ? "atlantique-optique/boutique" : "atlantique-optique/produits";
 
   // Paramètres triés par ordre alphabétique, puis le secret à la fin
   const toSign = `folder=${folder}&timestamp=${timestamp}`;

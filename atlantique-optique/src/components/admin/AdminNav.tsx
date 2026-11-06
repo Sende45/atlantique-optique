@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Glasses, LayoutDashboard, Mail, type LucideIcon } from "lucide-react";
+import { CalendarDays, Glasses, LayoutDashboard, Mail, Store, type LucideIcon } from "lucide-react";
 
 type Counts = { pendingAppointments: number; unreadMessages: number };
 
@@ -17,6 +17,7 @@ type NavLink = {
 const links: NavLink[] = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
   { href: "/admin/produits", label: "Lunettes", icon: Glasses },
+  { href: "/admin/boutique", label: "Photos boutique", icon: Store },
   { href: "/admin/rendez-vous", label: "Rendez-vous", icon: CalendarDays, countKey: "pendingAppointments" },
   { href: "/admin/messages", label: "Messages", icon: Mail, countKey: "unreadMessages" },
 ];

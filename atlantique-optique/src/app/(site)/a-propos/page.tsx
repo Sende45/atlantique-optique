@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Clock, Heart, MapPin, Target, Users } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/config/images";
+import { getBoutiqueImages } from "@/lib/site-images";
+import BoutiqueGallery from "@/components/BoutiqueGallery";
 import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
@@ -17,7 +18,11 @@ const pillars = [
   { icon: Users, title: "Notre équipe", text: "Des professionnels de l'optique à votre écoute." },
 ];
 
-export default function AProposPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AProposPage() {
+  const boutiqueImages = await getBoutiqueImages();
+
   return (
     <>
       <PageHero title="À propos" crumbs={[{ label: "À propos" }]} image={siteImages.heroAPropos} />
@@ -50,15 +55,7 @@ export default function AProposPage() {
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
         <div className="grid overflow-hidden rounded-2xl lg:grid-cols-[3fr_2fr]">
           <div className="relative min-h-[300px] bg-brand-100">
-            {siteImages.boutique && (
-              <Image
-                src={siteImages.boutique}
-                alt="La boutique Atlantique Optique"
-                fill
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                className="object-cover"
-              />
-            )}
+            <BoutiqueGallery images={boutiqueImages} />
           </div>
 
           <div className="bg-brand-900 p-8 text-white sm:p-10">

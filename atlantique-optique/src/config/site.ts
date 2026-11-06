@@ -56,7 +56,7 @@ export const siteConfig = {
   ],
 
   // À confirmer : uniquement les marques réellement vendues
-  brands: ["Ray-Ban", "Oakley", "Emporio Armani", "Guess", "Vogue", "Dior", "Zeiss", "Tom Ford"],
+  brands: ["Ray-Ban", "Gusto", "Mont Blanc", "prada", "Lacoste", "Nike", "mô", "Gucci", "Invu", "Hugo Boss", "Fendi", "Oliver people", "Elyos", "Vello", "Tom Ford", "Versace", "Guess" ],
 };
 
 export function whatsappLink(message = "Bonjour Atlantique Optique, je souhaite un renseignement.") {
